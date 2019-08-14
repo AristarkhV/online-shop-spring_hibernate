@@ -18,9 +18,7 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {
-        @ComponentScan("com.dao"),
-        @ComponentScan("com.service")})
+@ComponentScans(value = {@ComponentScan("com.dao"), @ComponentScan("com.service")})
 public class RootConfig {
 
     private Environment environment;
