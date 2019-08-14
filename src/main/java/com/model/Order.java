@@ -43,6 +43,20 @@ public class Order {
             inverseJoinColumns = {@JoinColumn(name = "idProduct")})
     private List<Product> orderProducts;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "code_order",
+            joinColumns = {@JoinColumn(name = "idOrder")},
+            inverseJoinColumns = {@JoinColumn(name = "idCode")})
+    private Code code;
+
+    public Code getCode() {
+        return code;
+    }
+
+    public void setCode(Code code) {
+        this.code = code;
+    }
+
     public Order() {
     }
 
@@ -54,7 +68,7 @@ public class Order {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public Order(Long orderID, User user, String email, String deliveryAddress, ArrayList<Product> orderProducts) {
+    public Order(Long orderID, User user, String email, String deliveryAddress, List<Product> orderProducts) {
         this.orderID = orderID;
         this.email = email;
         this.user = user;
@@ -98,7 +112,7 @@ public class Order {
         return orderProducts;
     }
 
-    public void setOrderProducts(ArrayList<Product> orderProducts) {
+    public void setOrderProducts(List<Product> orderProducts) {
         this.orderProducts = orderProducts;
     }
 

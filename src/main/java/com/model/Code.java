@@ -30,12 +30,6 @@ public class Code {
     @Column(name = "code")
     private String code;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    @JoinTable(name = "code_order",
-            joinColumns = {@JoinColumn(name = "idCode")},
-            inverseJoinColumns = {@JoinColumn(name = "idOrder")})
-    private Order order;
-
     public Code() {
     }
 
@@ -43,14 +37,12 @@ public class Code {
         this.codeID = codeID;
         this.email = email;
         this.code = code;
-        this.order = order;
     }
 
     public Code(String code, Order order, String email) {
         this.codeID = IdCreator.idCreator();
         this.email = email;
         this.code = code;
-        this.order = order;
     }
 
     public Long getCodeID() {
@@ -77,14 +69,6 @@ public class Code {
         this.code = code;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,13 +76,12 @@ public class Code {
         Code code1 = (Code) o;
         return Objects.equals(codeID, code1.codeID) &&
                 Objects.equals(email, code1.email) &&
-                Objects.equals(code, code1.code) &&
-                Objects.equals(order, code1.order);
+                Objects.equals(code, code1.code);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codeID, email, code, order);
+        return Objects.hash(codeID, email, code);
     }
 
     @Override
@@ -107,7 +90,6 @@ public class Code {
                 "codeID=" + codeID +
                 ", email='" + email + '\'' +
                 ", code='" + code + '\'' +
-                ", order=" + order +
                 '}';
     }
 }

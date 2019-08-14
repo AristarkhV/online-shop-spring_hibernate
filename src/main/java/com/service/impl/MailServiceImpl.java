@@ -3,6 +3,7 @@ package com.service.impl;
 import com.model.Code;
 import com.service.MailService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -14,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+@Service
 public class MailServiceImpl implements MailService {
 
     private static final Logger logger = Logger.getLogger(MailServiceImpl.class);
