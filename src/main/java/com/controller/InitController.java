@@ -18,7 +18,7 @@ import java.util.Optional;
 @SessionAttributes("user")
 public class InitController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public InitController(UserService userService) {
@@ -66,7 +66,7 @@ public class InitController {
                 return "redirect:/user/product";
             }
         } else {
-            model.addAttribute("error", "Пользователь с таким логином и паролем не найден");
+            model.addAttribute("error", "Wrong password or email :(");
             return "index";
         }
     }
