@@ -14,6 +14,7 @@ import com.service.RoleService;
 import com.service.UserService;
 import com.util.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -48,19 +50,20 @@ public class InitController {
         this.codeService = codeService;
     }
 
-    @ModelAttribute("user")
-    public User setUserToSession(User user) {
-        return user;
-    }
-
     @GetMapping("/")
     public String init() {
         return "redirect:/login";
     }
 
+
     @GetMapping("/login")
     public String index() {
         return "index";
+    }
+
+    @ModelAttribute("user")
+    public User setUserToSession() {
+        return new User();
     }
 
     @PostMapping("/login")
@@ -93,8 +96,9 @@ public class InitController {
         }
     }
 
-    @GetMapping("/init")
-    public String addUser() {
+    @PostConstruct
+    public String initDB() {
+
         Role admin = new Role(1L, "admin");
         roleService.addRole(admin);
 
@@ -112,6 +116,7 @@ public class InitController {
 
         Code code = new Code(1L, "1221", order, "user@u.u");
         codeService.addCode(code);
+
         return "index";
     }
 }

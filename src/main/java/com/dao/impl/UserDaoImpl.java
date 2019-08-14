@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,10 +48,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        User user = sessionFactory.getCurrentSession().byNaturalId(User.class)
-                .using("email", email)
-                .load();
-        return Optional.ofNullable(user);
+        Session session = sessionFactory.getCurrentSession();
+        TypedQuery<User> query = session.createQuery("FROM User WHERE email = :email");
+        query.setParameter("email", email);
+        List list = query.getResultList();
+        if (list.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of((User) list.get(0));
+        }
     }
 
     @Override
