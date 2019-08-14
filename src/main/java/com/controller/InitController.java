@@ -37,12 +37,9 @@ public class InitController {
     private CodeService codeService;
 
     @Autowired
-    public InitController(RoleService roleService,
-                          UserService userService,
-                          CartService cartService,
-                          ProductService productService,
-                          OrderService orderService,
-                          CodeService codeService) {
+    public InitController(RoleService roleService, UserService userService,
+                          CartService cartService, ProductService productService,
+                          OrderService orderService, CodeService codeService) {
         this.roleService = roleService;
         this.userService = userService;
         this.cartService = cartService;
