@@ -18,15 +18,14 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {@ComponentScan("com.dao"), @ComponentScan("com.service")})
+@ComponentScans(value = {
+        @ComponentScan("com.dao"),
+        @ComponentScan("com.service")
+})
 public class RootConfig {
 
-    private Environment environment;
-
     @Autowired
-    public RootConfig(Environment environment) {
-        this.environment = environment;
-    }
+    private Environment environment;
 
     @Bean
     public DataSource getDataSource() {
@@ -43,11 +42,11 @@ public class RootConfig {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(getDataSource());
 
-        Properties properties = new Properties();
-        properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+        Properties props = new Properties();
+        props.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+        props.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
 
-        factoryBean.setHibernateProperties(properties);
+        factoryBean.setHibernateProperties(props);
         factoryBean.setPackagesToScan("com.model");
         return factoryBean;
     }

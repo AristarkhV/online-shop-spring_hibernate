@@ -25,8 +25,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAll() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("FROM User").list();
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("FROM User");
+        return query.getResultList();
     }
 
     @Override
@@ -48,22 +48,24 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        Session session = sessionFactory.getCurrentSession();
-        TypedQuery<User> query = session.createQuery("FROM User WHERE email = :email");
-        query.setParameter("email", email);
-        List list = query.getResultList();
-        if (list.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of((User) list.get(0));
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            User user = (User) session.createQuery("FROM User WHERE email = :email")
+                    .setParameter("email", email)
+                    .list()
+                    .get(0);
+            return Optional.of(user);
+        } catch (Exception e) {
+            logger.error("Exception: " + e);
         }
+        return Optional.empty();
     }
 
     @Override
     public void deleteUser(User value) {
         try {
             sessionFactory.getCurrentSession().delete(value);
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.info("User " + value + " isn't deleted. ", e);
         }
     }

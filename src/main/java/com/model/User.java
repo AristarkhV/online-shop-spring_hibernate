@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
-@Table(name = "User")
+@Table(name = "User", schema = "test_spring")
 public class User {
 
     @Id
