@@ -31,7 +31,6 @@ public class InitController {
         return "redirect:/login";
     }
 
-
     @GetMapping("/login")
     public String index() {
         return "index";
