@@ -1,5 +1,6 @@
 package com.config;
 
+import com.model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +19,7 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {
-        @ComponentScan("com.dao"),
-        @ComponentScan("com.service")
-})
+@ComponentScans(value = {@ComponentScan("com.dao"), @ComponentScan("com.service")})
 public class RootConfig {
 
     @Autowired
@@ -42,12 +40,12 @@ public class RootConfig {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(getDataSource());
 
-        Properties props = new Properties();
-        props.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
-        props.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+        Properties properties = new Properties();
+        properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
 
-        factoryBean.setHibernateProperties(props);
-        factoryBean.setPackagesToScan("com.model");
+        factoryBean.setHibernateProperties(properties);
+        factoryBean.setPackagesToScan(User.class.getPackage().getName());
         return factoryBean;
     }
 

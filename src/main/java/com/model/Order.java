@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "`Order`")
+@Table(name = "`Order`", schema = "test_spring")
 public class Order {
 
     @Id

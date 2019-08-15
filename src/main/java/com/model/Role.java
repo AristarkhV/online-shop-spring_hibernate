@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Role")
+@Table(name = "Role", schema = "test_spring")
 public class Role {
 
     @Id
@@ -17,7 +17,7 @@ public class Role {
     @Column(name = "idRole")
     private Long roleID;
 
-    @Column(name = "name")
+    @Column(name = "role")
     private String role;
 
     public Role() {

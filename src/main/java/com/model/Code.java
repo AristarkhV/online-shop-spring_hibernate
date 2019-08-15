@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Code")
+@Table(name = "Code", schema = "test_spring")
 public class Code {
 
     @Id
