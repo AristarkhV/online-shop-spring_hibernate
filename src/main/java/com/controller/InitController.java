@@ -22,7 +22,6 @@ public class InitController {
 
     @Autowired
     public InitController(UserService userService) {
-
         this.userService = userService;
     }
 
