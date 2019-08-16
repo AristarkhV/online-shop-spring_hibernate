@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.Optional;
 
@@ -24,8 +23,7 @@ public class CartController {
     private ProductService productService;
 
     @Autowired
-    public CartController(CartService cartService,
-                          ProductService productService) {
+    public CartController(CartService cartService, ProductService productService) {
         this.cartService = cartService;
         this.productService = productService;
     }
@@ -49,9 +47,9 @@ public class CartController {
         }
 
         Cart cart = null;
-        Optional<Cart> optionalBasket = cartService.getCart(user);
-        if (optionalBasket.isPresent()) {
-            cart = optionalBasket.get();
+        Optional<Cart> optionalCart = cartService.getCart(user);
+        if (optionalCart.isPresent()) {
+            cart = optionalCart.get();
         }
 
         cartService.addProductToCart(cart, product);

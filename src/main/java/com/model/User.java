@@ -21,21 +21,18 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users", schema = "test_spring")
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "userID")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "idUser")
+    private Long userID;
 
-    @Column(name = "login", unique = true, length = 50, nullable = false)
-    private String login;
-
-    @Column(name = "email", unique = true, length = 64, nullable = false)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password", length = 255, nullable = false)
+    @Column(name = "password")
     private String password;
 
     @OneToOne(targetEntity = Role.class, cascade = CascadeType.MERGE)
@@ -46,19 +43,18 @@ public class User implements UserDetails {
 
     }
 
-    public User(String login, String email, String password, Role role) {
-        this.login = login;
+    public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserID() {
+        return userID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     public String getEmail() {
@@ -67,14 +63,6 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public void setPassword(String password) {
@@ -95,7 +83,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override
@@ -130,8 +118,7 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(login, user.login) &&
+        return Objects.equals(userID, user.userID) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(role, user.role);
@@ -139,14 +126,13 @@ public class User implements UserDetails {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, email, password, role);
+        return Objects.hash(userID, email, password, role);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
+                "userID=" + userID +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
