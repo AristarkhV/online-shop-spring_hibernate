@@ -48,11 +48,10 @@ public class UserController {
                                 @RequestParam("confirmPassword") String confirmPassword,
                                 ModelMap model) {
         String email = user.getEmail();
-        String login = user.getEmail();
         String password = user.getPassword();
         String role = user.getRole().getRole();
         Optional<User> optionalPresentUser = userService.getUserByEmail(email);
-        if (email.isEmpty() || login.isEmpty() || password.isEmpty() || role == null) {
+        if (email.isEmpty() || password.isEmpty() || role == null) {
             model.addAttribute("error", "Empty fields!");
         } else if (optionalPresentUser.isPresent()) {
             model.addAttribute("error", "Пользователь с таким логином " +
@@ -85,11 +84,10 @@ public class UserController {
     public String applyEditUser(@ModelAttribute("user") User user,
                                 @RequestParam("confirmPassword") String confirmPassword,
                                 ModelMap model) {
-        String login = user.getEmail();
         String email = user.getEmail();
         String password = user.getPassword();
         String role = user.getRole().getRole();
-        if (email.isEmpty() || login.isEmpty() || password.isEmpty() || role.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty() || role.isEmpty()) {
             model.addAttribute("error", "Empty fields!");
             model.addAttribute("user", user);
         } else if (!(password.equals(confirmPassword))) {
