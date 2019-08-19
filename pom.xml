@@ -27,6 +27,13 @@
       <version>4.3.7.RELEASE</version>
     </dependency>
 
+    <!-- Spring MVC Dependency -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>4.3.7.RELEASE</version>
+    </dependency>
+
     <!-- JSTL Dependency-->
     <dependency>
       <groupId>javax.servlet.jsp.jstl</groupId>

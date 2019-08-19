@@ -1,6 +1,5 @@
 package com.config;
 
-import com.model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +21,12 @@ import java.util.Properties;
 @ComponentScans(value = {@ComponentScan("com.dao"), @ComponentScan("com.service")})
 public class RootConfig {
 
-    @Autowired
     private Environment environment;
+
+    @Autowired
+    public RootConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public DataSource getDataSource() {
@@ -45,7 +48,7 @@ public class RootConfig {
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
 
         factoryBean.setHibernateProperties(properties);
-        factoryBean.setPackagesToScan(User.class.getPackage().getName());
+        factoryBean.setPackagesToScan("com.model");
         return factoryBean;
     }
 

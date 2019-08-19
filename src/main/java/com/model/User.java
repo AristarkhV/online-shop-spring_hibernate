@@ -1,7 +1,8 @@
 package com.model;
 
-import com.util.HashUtil;
-import com.util.IdCreator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,22 +12,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "User", schema = "test_spring")
-public class User {
+@PrimaryKeyJoinColumn(name = "userID")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idUser")
     private Long userID;
-
-    @OneToOne(targetEntity = Role.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "idRole")
-    private Role role;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -34,24 +35,18 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "salt", nullable = false)
-    private byte[] salt = HashUtil.getRandomSalt();
+    @OneToOne(targetEntity = Role.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idRole")
+    private Role role;
 
     public User() {
+
     }
 
     public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.userID = IdCreator.idCreator();
-    }
-
-    public User(Long userID, String email, String password, Role role) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.userID = userID;
     }
 
     public Long getUserID() {
@@ -62,14 +57,6 @@ public class User {
         this.userID = userID;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -78,20 +65,52 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public byte[] getSalt() {
-        return salt;
+    public Role getRole() {
+        return role;
     }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority(getRole().getRole()));
+        return list;
     }
 
     @Override
@@ -100,27 +119,23 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(userID, user.userID) &&
-                Objects.equals(role, user.role) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
-                Arrays.equals(salt, user.salt);
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(userID, role, email, password);
-        result = 31 * result + Arrays.hashCode(salt);
-        return result;
+        return Objects.hash(userID, email, password, role);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userID=" + userID +
-                ", role=" + role +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", salt=" + Arrays.toString(salt) +
+                ", role='" + role + '\'' +
                 '}';
     }
 }
